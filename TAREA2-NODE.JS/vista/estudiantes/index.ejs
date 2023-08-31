@@ -1,0 +1,144 @@
+<!DOCTYPE html>              
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea 2 : Nodejs</title>
+    <link rel="stylesheet" href="../estudiantes/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <center>
+        <div class="container">
+            <h1>Miguel Villalobos V.S</h1>
+        </div>
+    </center>
+<form action="/crud_c" method="post">
+    <ul class="nav justify-content-center custom-navbar">
+        <li class="nav-item">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal"><strong>BOTON-MENU</strong></button>
+        </li>
+    </ul>
+ <div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">DATOS DE ESTUDIANTES</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <center>
+                <div class="modal-body">
+                    <input type="text" id="txt_id_estudiantes" name="txt_id_estudiantes" placeholder="ID-Estudiantes">
+                    <input type="text" id="txt_carnet" name="txt_carnet" placeholder="carnet" pattern="E\d{3}" title="El carnet debe tener el formato E001-E999" required>
+                    <input type="text" id="txt_nombres" name="txt_nombres" placeholder="nombres">
+                    <input type="text" id="txt_apellidos" name="txt_apellidos" placeholder="apellidos">
+                    <input type="text" id="txt_dirección" name="txt_dirección" placeholder="dirección">
+                    <input type="text" id="txt_telefono" name="txt_telefono" placeholder="telefono">
+                    <input type="text" id="txt_correo_electronico" name="txt_correo_electronico" placeholder="correo_electronico">
+                    <input type="text" id="txt_tipo_de_sangre" name="txt_tipo_de_sangre" placeholder="tipo_de_sangre">
+                    <input type="date" id="txt_fecha_nacimiento" name="txt_fecha_nacimiento" placeholder="fecha_nacimiento">
+                    <hr>
+                </div>
+                </center>
+                <div class="modal-footer">
+                     <center>
+                        <button type="submit" class="btn btn-primary" style="background-color: green;" id="btn_crear" name="btn_crear" value="crear">Crear</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: orange;" id="btn_leer" name="btn_leer" value="leer">Leer</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: blue;" id="btn_actualizar" name="btn_actualizar" value="actualizar">Actualizar</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: red;" id="btn_borrar" name="btn_borrar" value="borrar" onclick="confirmDelete()">Borrar</button>
+                        <button type="button" class="btn btn-secondary" style="background-color: black" data-bs-dismiss="modal">Salir</button>
+                    </center>   
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</form>
+    <table border="1px">
+        <div class="container text-center">
+            <div class="row">
+              <% resultado.forEach((Estudiantes) => { %>
+                <div class="col-md">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Id</th>
+                                <th class="text-center">Carnet</th>
+                                <th class="text-center">Nombres</th>
+                                <th class="text-center">Apellidos</th>
+                                <th class="text-center">Dirección</th>
+                                <th class="text-center">Teléfono</th>
+                                <th class="text-center">Correo Electrónico</th>
+                                <th class="text-center">Sangre</th>
+                                <th class="text-center">Nacimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="data-row" data-bs-toggle="modal" data-bs-target="#myModal" data-row='{"id_estudiantes": <%= Estudiantes.id_estudiantes %>, "carnet": "<%= Estudiantes.carnet %>", "nombres": "<%= Estudiantes.nombres %>", "apellidos": "<%= Estudiantes.apellidos %>", "dirección": "<%= Estudiantes.dirección %>", "telefono": "<%= Estudiantes.telefono %>", "correo_electronico": "<%= Estudiantes.correo_electronico %>", "tipo_de_sangre": "<%= Estudiantes.tipo_de_sangre %>", "fecha_nacimiento": "<%= Estudiantes.fecha_nacimiento %>"}'>
+                                <td class="text-center"><%= Estudiantes.id_estudiantes %></td>
+                                <td class="text-center"><%= Estudiantes.carnet %></td>
+                                <td class="text-center"><%= Estudiantes.nombres %></td>
+                                <td class="text-center"><%= Estudiantes.apellidos %></td>
+                                <td class="text-center"><%= Estudiantes.dirección %></td>
+                                <td class="text-center"><%= Estudiantes.telefono %></td>
+                                <td class="text-center"><%= Estudiantes.correo_electronico %></td>
+                                <td class="text-center"><%= Estudiantes.tipo_de_sangre %></td>
+                                <td class="text-center"><%= Estudiantes.fecha_nacimiento %></td>                                                       
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+              <% }); %>
+            </div>
+        </div>
+        <script src="../estudiantes/js/bootstrap.min.js"></script>  
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const dataRows = document.querySelectorAll(".data-row");
+                dataRows.forEach(row => {
+                    row.addEventListener("click", function () {
+                        const rowData = this.getAttribute("data-row");
+                        const data = JSON.parse(rowData);
+                        document.getElementById("txt_id_estudiantes").value = data.id_estudiantes;
+                        document.getElementById("txt_carnet").value = data.carnet;
+                        document.getElementById("txt_nombres").value = data.nombres;
+                        document.getElementById("txt_apellidos").value = data.apellidos;
+                        document.getElementById("txt_dirección").value = data.dirección;
+                        document.getElementById("txt_telefono").value = data.telefono;
+                        document.getElementById("txt_correo_electronico").value = data.correo_electronico;
+                        document.getElementById("txt_tipo_de_sangre").value = data.tipo_de_sangre;
+                        document.getElementById("txt_fecha_nacimiento").value = data.fecha_nacimiento;
+                        const modal = new bootstrap.Modal(document.getElementById("myModal"));
+                        modal.show();
+                    });
+                });
+            });
+        </script>
+<script>
+
+function confirmDelete(event) {
+    if (confirm("¿Estás seguro de que deseas eliminar este estudiante?")) {
+        const row = event.target.closest(".data-row");
+        const idEstudiante = row.dataset.row.id_estudiantes;
+
+        fetch(`/eliminar/${idEstudiante}`, {
+            method: "DELETE",
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                console.error("Error al eliminar estudiante");
+            }
+        })
+        .catch(error => {
+            console.error("Error al eliminar estudiante:", error);
+        });
+    }
+}
+</script>
+</body>
+</html>
